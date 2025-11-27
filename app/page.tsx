@@ -210,7 +210,7 @@ export default function Home() {
           </div>
 
           {/* Scrollable container for mobile */}
-          <div className="overflow-x-auto -mx-4 px-4 pb-2">
+          <div className="overflow-x-auto pb-2">
             {/* The Table Container with thick border and rounded corners */}
             <div className="border-4 border-retro-dark bg-retro-teal rounded-[25px] shadow-[3px_3px_0px_0px_#1D2F38] overflow-hidden relative -mt-[4px] z-0 min-w-[700px]">
 
