@@ -70,51 +70,27 @@ const DailyMeditation = () => {
   useEffect(() => {
     const fetchJFT = async () => {
       try {
-        const response = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.jftna.org/jft/'));
+        // Use our own API route to avoid CORS issues
+        const response = await fetch('/api/jft');
         const data = await response.json();
 
-        if (data.contents) {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(data.contents, 'text/html');
-
-          const contentTable = doc.querySelector('table');
-          if (contentTable) {
-            const rawTextLines = contentTable.innerText.split('\n').map(line => line.trim()).filter(line => line !== '');
-
-            const date = rawTextLines[0];
-            const title = rawTextLines[1];
-            const quote = rawTextLines[2];
-
-            const reflectionIndex = rawTextLines.findIndex(line => line.toLowerCase().startsWith('just for today:'));
-
-            let bodyContent: string[] = [];
-            let reflection = "Just for today.";
-
-            if (reflectionIndex > 3) {
-                bodyContent = rawTextLines.slice(3, reflectionIndex);
-                reflection = rawTextLines[reflectionIndex].replace(/^Just for today:\s*/i, '');
-            } else {
-                bodyContent = rawTextLines.slice(3, rawTextLines.length - 1);
-                reflection = rawTextLines[rawTextLines.length - 1];
-            }
-
-            setJftData({
-              date,
-              title,
-              quote,
-              content: bodyContent,
-              reflection
-            });
-          }
+        if (data) {
+          setJftData({
+            date: data.date,
+            title: data.title,
+            quote: data.quote,
+            content: data.content,
+            reflection: data.reflection
+          });
         }
       } catch (error) {
         console.error("Failed to fetch JFT", error);
         setJftData({
-            date: new Date().toLocaleDateString(),
-            title: "Serenity",
-            quote: "God, grant me the serenity...",
-            content: ["Service unavailable. Please check back later."],
-            reflection: "Just for today."
+            date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+            title: "Daily Meditation",
+            quote: "We can find meaning and purpose in our lives through recovery.",
+            content: ["Unable to load today's meditation. Please visit jftna.org directly."],
+            reflection: "I will stay clean and work my program today."
         });
       } finally {
         setLoading(false);
@@ -233,11 +209,13 @@ export default function Home() {
             <CardHeader title="Meetings" className="w-64 !rounded-b-none" />
           </div>
 
-          {/* The Table Container with thick border and rounded corners */}
-          <div className="border-4 border-retro-dark bg-retro-teal rounded-[25px] shadow-[3px_3px_0px_0px_#1D2F38] overflow-hidden relative -mt-[4px] z-0">
+          {/* Scrollable container for mobile */}
+          <div className="overflow-x-auto -mx-4 px-4 pb-2">
+            {/* The Table Container with thick border and rounded corners */}
+            <div className="border-4 border-retro-dark bg-retro-teal rounded-[25px] shadow-[3px_3px_0px_0px_#1D2F38] overflow-hidden relative -mt-[4px] z-0 min-w-[700px]">
 
-            {/* Grid Definition: Using explicit columns for precise control */}
-            <div className="grid grid-cols-[1.5fr_2fr_2.5fr_1.5fr_2fr] font-bold text-retro-dark text-lg leading-tight">
+              {/* Grid Definition: Using explicit columns for precise control */}
+              <div className="grid grid-cols-[1.5fr_2fr_2.5fr_1.5fr_2fr] font-bold text-retro-dark text-base md:text-lg leading-tight">
 
               {/* === Headers === */}
               {/* Note: Specific rounded corners on top-left and top-right cells */}
@@ -295,6 +273,7 @@ export default function Home() {
                 <RetroButton label="Directions" />
               </div>
 
+              </div>
             </div>
           </div>
         </section>
