@@ -1,26 +1,36 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Colors */
+  --color-retro-bg: #F3EAD3;
+  --color-retro-dark: #1D2F38;
+  --color-retro-pink: #E75297;
+  --color-retro-teal: #2CB5B5;
+  --color-retro-yellow: #FDB813;
+  --color-retro-tealDark: #249494;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Fonts */
+  --font-header: "Changa One", cursive;
+  --font-body: "Baloo 2", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-retro-bg);
+  color: var(--color-retro-dark);
+  font-family: var(--font-body);
+}
+
+/* Utility for the retro text outline effect */
+.text-stroke-retro {
+  -webkit-text-stroke: 1.5px var(--color-retro-dark);
+  text-shadow: 1px 1px 0px var(--color-retro-dark);
+}
+
+.text-stroke-retro-sm {
+  -webkit-text-stroke: 1px var(--color-retro-dark);
+}
+
+/* Ensure inputs inherit font style */
+input, textarea {
+  font-family: inherit;
 }
